@@ -18,11 +18,16 @@ static const Bool statusmarkup      = True;     /* True means use pango markup i
 static const char *tags[] = { "main", "web", "code", "doc", "files", "media", "mail", "misc" };
 
 static const Rule rules[] = {
+	/* xprop(1):
+	 * 	WM_CLASS(STRING) = instance, class
+	 *	WM_NAME(STRING) = title
+	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     NULL,       NULL,       1 << 5,       True,        -1 },
 	{ "Dwb",      NULL,       NULL,       1 << 1,       False,       -1 },
 	{ "Thunar",   NULL,       NULL,       1 << 4,       False,       -1 },
-	{ "Mpv",      NULL,       NULL,       0,            True,        -1 },
+	{ "mpv",      NULL,       NULL,       1 << 5,       True,        -1 },
+	{ "mgba",     "mgba",     "mGBA",     0,            True,        -1 },
 };
 
 /* layout(s) */
@@ -49,9 +54,12 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "urxvtc", NULL };
-static const char *killx[]    = { "killall", "xinit" }; /* Break the dwm restart loop */
+static const char *dmenucmd[]  = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *termcmd[]   = { "urxvtc", NULL };
+static const char *killx[]     = { "killall", "xinit", NULL }; /* Break the dwm restart loop */
+static const char *volume_up[]   = { "amixer", "-M", "set", "Master", "1%+", NULL };
+static const char *volume_down[] = { "amixer", "-M", "set", "Master", "1%-", NULL };
+static const char *mpc_toggle[] = { "mpc", "toggle", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -64,7 +72,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
+	{ MODKEY,                       XK_v,      zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -89,6 +97,9 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_r,      quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = killx} },
+	{ MODKEY,                       XK_equal,  spawn,          {.v = volume_up} },
+	{ MODKEY,                       XK_minus,  spawn,          {.v = volume_down} },
+	{ MODKEY,                       XK_p,      spawn,          {.v = mpc_toggle } },
 };
 
 /* button definitions */
