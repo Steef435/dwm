@@ -29,6 +29,7 @@ static const Rule rules[] = {
 	{ "Thunar",   NULL,       NULL,       1 << 4,       False,       -1 },
 	{ "mpv",      NULL,       NULL,       1 << 5,       True,        -1 },
 	{ "mgba",     "mgba",     "mGBA",     0,            True,        -1 },
+	{ "geary",    NULL,       NULL,       1 << 6,       False,       -1 },
 };
 
 /* layout(s) */
